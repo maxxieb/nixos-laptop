@@ -68,7 +68,7 @@
     blockSocial = false;
   };
 
-  # networking.extraHosts = "127.0.0.1 vault.vault";
+  networking.extraHosts = "127.0.0.1 vault.vault";
 
   #networking.extraHosts = {
   #  "192.168.11.28" = [ "bastion" ];
