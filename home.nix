@@ -43,6 +43,7 @@ in
       vesktop
       du-dust
       fd
+      heroic
       feh
       ansible
       firefox
