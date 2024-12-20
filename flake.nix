@@ -2,6 +2,7 @@
   description = "Flaked NixOS Config";
 
   inputs = {
+    hosts.url = "github:StevenBlack/hosts";
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,6 +37,7 @@
       nixvim-config,
       lix-module,
       chaotic,
+      hosts,
       ...
     }@inputs:
     {
@@ -70,6 +72,7 @@
             home-manager.nixosModules.home-manager
             lix-module.nixosModules.default
             chaotic.nixosModules.default
+            hosts.nixosModules.networking
             #inputs.musnix.nixosModules.musnix
             {
               home-manager.useGlobalPkgs = true;

@@ -26,7 +26,10 @@
   '';
 
   nix.settings = {
-    substituters = [ "https://nix-community.cachix.org" "https://hyprland.cachix.org" ];
+    substituters = [
+      "https://nix-community.cachix.org"
+      "https://hyprland.cachix.org"
+    ];
     trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -46,7 +49,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-8ca1acab-c74d-4bfb-9230-d66684026ef6".device = "/dev/disk/by-uuid/8ca1acab-c74d-4bfb-9230-d66684026ef6";
+  boot.initrd.luks.devices."luks-8ca1acab-c74d-4bfb-9230-d66684026ef6".device =
+    "/dev/disk/by-uuid/8ca1acab-c74d-4bfb-9230-d66684026ef6";
   networking.hostName = "hp840"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -57,7 +61,13 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  networking.hosts = {
+  networking.stevenBlackHosts = {
+    blockFakenews = true;
+    blockGambling = true;
+    blockSocial = false;
+  };
+
+  networking.extraHosts = {
     "192.168.11.28" = [ "bastion" ];
     "192.168.11.167" = [ "cntm" ];
     "127.0.0.1" = [ "vault.vault" ];
@@ -106,7 +116,7 @@
   # };
 
   services.k3s = {
-    enable = false;
+    enable = true;
     package = pkgs.k3s_1_30;
     extraFlags = "--disable traefik";
   };
@@ -296,7 +306,6 @@
     xterm
     rofi
     inputs.nixvim-config.packages.${system}.default
-    k3s_1_30
   ];
 
   fonts.packages = with pkgs; [
