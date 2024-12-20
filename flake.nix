@@ -72,7 +72,6 @@
             home-manager.nixosModules.home-manager
             lix-module.nixosModules.default
             chaotic.nixosModules.default
-            hosts.nixosModule.networking
             #inputs.musnix.nixosModules.musnix
             {
               home-manager.useGlobalPkgs = true;
