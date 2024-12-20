@@ -12,6 +12,14 @@ in
   nixpkgs.config.allowUnfreePredicate = pkg: true;
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
+
+  home.file = {
+    profile-pic = {
+      source = ./images/pfp.png;
+      target = ".face";
+    };
+  };
+
   home = {
     keyboard = {
       options = [ "caps:escape" ];
