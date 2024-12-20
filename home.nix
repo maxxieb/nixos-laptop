@@ -4,8 +4,9 @@
   inputs,
   lib,
   ...
-}:
-
+}: let
+vs-ext = inputs.nix-vscode-extensions.extensions.x86_64-linux.vscode-marketplace;
+in
 {
   nixpkgs.config.allowUnfreePredicate = pkg: true;
   # Home Manager needs a bit of information about you and the paths it should
@@ -31,6 +32,7 @@
       bitwarden
       croc
       csview
+      grafana-alloy
       delve
       devbox
       devpod
@@ -41,12 +43,14 @@
       du-dust
       fd
       feh
+      ansible
       firefox
       fluxcd
       fzf
       gh
       git
       git-lfs
+      gron
       blueberry
       glow
       gnumake
@@ -57,6 +61,10 @@
       k3d
       graphviz
       hddtemp
+      (python3.withPackages (p: [
+        p.requests
+        p.lxml
+      ]))
       htop
       ibm-plex
       inetutils
@@ -171,6 +179,10 @@
   };
 
   programs = {
+    taskwarrior = {
+      enable = true;
+      package = pkgs.taskwarrior3;
+    };
     eza = {
       enable = true;
       colors = "auto";
@@ -185,11 +197,30 @@
     };
     vscode = {
       enable = true;
-      package = pkgs.vscode.fhs;
+      package = pkgs.vscodium;
+      extensions =
+        with vs-ext;
+        [
+          zainchen.json
+          bbenoist.nix
+          golang.go
+          ms-python.python
+          redhat.ansible
+          grafana.grafana-alloy
+        ];
       userSettings = {
         "files.autoSave" = "onFocusChange";
+        "files.insertFinalNewline" = true;
+        "files.trimTrailingWhitespace" = true;
         "editor.formatOnSave" = true;
+        "editor.cursorBlinking" = "phase";
+        "editor.cursorStyle" = "line";
+        "editor.fontLigatures" = true;
         "workbench.sideBar.location" = "right";
+        "explorer.autoReveal" = true;
+        "editor.fontFamily" = lib.mkForce "Hack Nerd Font Mono";
+        "terminal.integrated.fontFamily" = lib.mkForce "Hack Nerd Font Mono";
+
       };
     };
     qutebrowser = {
@@ -198,13 +229,16 @@
     waybar = {
       enable = true;
       settings = [
-      {
+        {
           layer = "top";
           position = "top";
           height = 30;
-          modules-left = ["hyprland/workspaces"];
-          modules-center = ["clock"];
-          modules-right = ["network" "battery"];
+          modules-left = [ "hyprland/workspaces" ];
+          modules-center = [ "clock" ];
+          modules-right = [
+            "network"
+            "battery"
+          ];
           "hyprland/workspaces" = {
             format = "{icon}";
             on-scroll-up = "hyprctl dispatch workspace e+1";
@@ -221,7 +255,7 @@
           "battery" = {
             format = "{icon} {capacity}%";
           };
-      }
+        }
       ];
     };
     carapace = {
@@ -287,6 +321,20 @@
       userName = "mbrydak";
     };
 
+    kitty = {
+      enable = true;
+      settings = {
+        background_opacity = lib.mkForce 0.8;
+        confirm_os_window_close = 2;
+      };
+      font = {
+        name = lib.mkForce "Hack Nerd Font Mono";
+      };
+      shellIntegration = {
+        enableZshIntegration = true;
+      };
+    };
+
     alacritty = {
       enable = true;
       settings = pkgs.lib.mkForce {
@@ -323,7 +371,7 @@
       ];
     };
     zellij = {
-      enable = false;
+      enable = true;
       enableZshIntegration = true;
     };
     direnv = {
@@ -354,7 +402,7 @@
     };
     rofi = {
       enable = true;
-      terminal = "alacritty";
+      terminal = "kitty";
       extraConfig = {
         modes = "window,drun,run,ssh";
         show-icons = true;
@@ -518,7 +566,7 @@
     enable = true;
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     plugins = with inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}; [
-    borders-plus-plus
+      borders-plus-plus
     ];
     settings = {
       "$mainMod" = "SUPER";
@@ -568,7 +616,7 @@
       ];
       bind = [
         "$mainMod, F, fullscreen"
-        "$mainMod, Q, exec, ${pkgs.alacritty}/bin/alacritty"
+        "$mainMod, Q, exec, ${pkgs.kitty}/bin/kitty"
         "$mainMod, C, killactive,"
         "$mainMod, M, exit,"
         "$mainMod, E, exec, ${pkgs.dolphin}/bin/dolphin"

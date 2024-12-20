@@ -2,6 +2,11 @@
   description = "Flaked NixOS Config";
 
   inputs = {
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-2.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -28,6 +33,7 @@
       stylix,
       home-manager,
       nixvim-config,
+      lix-module,
       ...
     }@inputs:
     {
@@ -45,7 +51,7 @@
 
             {
               home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = {inherit inputs; };
+              home-manager.extraSpecialArgs = { inherit inputs; };
               # home-manager.useUserPackages = true;
               home-manager.users.max = import ./home.nix;
             }
@@ -60,10 +66,11 @@
             ./hosts/hp840/configuration.nix
             stylix.nixosModules.stylix
             home-manager.nixosModules.home-manager
+            lix-module.nixosModules.default
             #inputs.musnix.nixosModules.musnix
             {
               home-manager.useGlobalPkgs = true;
-              home-manager.extraSpecialArgs = {inherit inputs; };
+              home-manager.extraSpecialArgs = { inherit inputs; };
               home-manager.useUserPackages = true;
               home-manager.users.max = import ./home.nix;
             }

@@ -76,7 +76,7 @@
 
   stylix.enable = true;
 
-  stylix.image = ./wallpaper/motorcycle-anime-girl.png;
+  stylix.image = ./wallpaper/anime-rest.jpeg;
 
   stylix.polarity = "dark";
 
