@@ -62,6 +62,7 @@
   networking.networkmanager.enable = true;
 
   networking.stevenBlackHosts = {
+  enable = true;
     blockFakenews = true;
     blockGambling = true;
     blockSocial = false;
