@@ -67,7 +67,7 @@
     blockSocial = false;
   };
 
-  networking.extraHosts = "127.0.0.1 vault.vault";
+  # networking.extraHosts = "127.0.0.1 vault.vault";
 
   #networking.extraHosts = {
   #  "192.168.11.28" = [ "bastion" ];
@@ -118,7 +118,7 @@
   # };
 
   services.k3s = {
-    enable = true;
+    enable = false;
     package = pkgs.k3s_1_30;
     extraFlags = "--disable traefik";
   };
