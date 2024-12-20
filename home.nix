@@ -4,8 +4,9 @@
   inputs,
   lib,
   ...
-}: let
-vs-ext = inputs.nix-vscode-extensions.extensions.x86_64-linux.vscode-marketplace;
+}:
+let
+  vs-ext = inputs.nix-vscode-extensions.extensions.x86_64-linux.vscode-marketplace;
 in
 {
   nixpkgs.config.allowUnfreePredicate = pkg: true;
@@ -198,16 +199,14 @@ in
     vscode = {
       enable = true;
       package = pkgs.vscodium;
-      extensions =
-        with vs-ext;
-        [
-          zainchen.json
-          bbenoist.nix
-          golang.go
-          ms-python.python
-          redhat.ansible
-          grafana.grafana-alloy
-        ];
+      extensions = with vs-ext; [
+        zainchen.json
+        bbenoist.nix
+        golang.go
+        ms-python.python
+        redhat.ansible
+        grafana.grafana-alloy
+      ];
       userSettings = {
         "files.autoSave" = "onFocusChange";
         "files.insertFinalNewline" = true;
@@ -515,10 +514,14 @@ in
             "${modifier}+Control+Right" = "focus output right";
             "${modifier}+Control+Shift+Left" = "move output left";
             "${modifier}+Control+Shift+Right" = "move output right";
-            "XF86AudioRaiseVolume" = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status";
-            "XF86AudioLowerVolume " = "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status";
-            "XF86AudioMute" = "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status";
-            "XF86AudioMicMute" = "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status";
+            "XF86AudioRaiseVolume" =
+              "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status";
+            "XF86AudioLowerVolume " =
+              "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status";
+            "XF86AudioMute" =
+              "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status";
+            "XF86AudioMicMute" =
+              "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status";
             "XF86MonBrightnessUp" = "exec --no-stsartup-id brightnessctl set +10%";
             "XF86MonBrightnessDown" = "exec --no-stsartup-id brightnessctl set 10%-";
           };
