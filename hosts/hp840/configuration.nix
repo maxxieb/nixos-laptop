@@ -67,20 +67,22 @@
     blockSocial = false;
   };
 
-  networking.extraHosts = {
-    "192.168.11.28" = [ "bastion" ];
-    "192.168.11.167" = [ "cntm" ];
-    "127.0.0.1" = [ "vault.vault" ];
-    #  "192.168.0.77" = ["k8s-master-0.homelab.home"];
-    #  "192.168.0.116" = ["k8s-master-1.homelab.home"];
-    #  "192.168.0.220" = ["k8s-master-2.homelab.home"];
-    #  "192.168.0.27" = ["k8s-worker-0.homelab.home"];
-    #  "192.168.0.232" = ["k8s-worker-1.homelab.home"];
-    #  "192.168.0.84" = ["k8s-worker-2.homelab.home"];
-    #  "192.168.0.201" = ["pve.homelab.home"];
-    #  "192.168.0.57" = ["pihole.homelab.home"];
-    #  "192.168.0.78" = ["k8s-lb.homelab.home"];
-  };
+  networking.extraHosts = "127.0.0.1 vault.vault";
+
+  #networking.extraHosts = {
+  #  "192.168.11.28" = [ "bastion" ];
+  #  "192.168.11.167" = [ "cntm" ];
+  #  "127.0.0.1" = [ "vault.vault" ];
+  #  #  "192.168.0.77" = ["k8s-master-0.homelab.home"];
+  #  #  "192.168.0.116" = ["k8s-master-1.homelab.home"];
+  #  #  "192.168.0.220" = ["k8s-master-2.homelab.home"];
+  #  #  "192.168.0.27" = ["k8s-worker-0.homelab.home"];
+  #  #  "192.168.0.232" = ["k8s-worker-1.homelab.home"];
+  #  #  "192.168.0.84" = ["k8s-worker-2.homelab.home"];
+  #  #  "192.168.0.201" = ["pve.homelab.home"];
+  #  #  "192.168.0.57" = ["pihole.homelab.home"];
+  #  #  "192.168.0.78" = ["k8s-lb.homelab.home"];
+  #};
 
   networking.nameservers = [ "192.168.0.57" ];
 
