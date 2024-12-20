@@ -21,6 +21,7 @@
       url = "github:nix-community/home-manager";
     };
     nixvim-config.url = "github:mbrydak/nixvim-config";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     #    musnix = {
     #      url = "github:musnix/musnix";
     #    };
@@ -34,6 +35,7 @@
       home-manager,
       nixvim-config,
       lix-module,
+      chaotic,
       ...
     }@inputs:
     {
@@ -67,6 +69,7 @@
             stylix.nixosModules.stylix
             home-manager.nixosModules.home-manager
             lix-module.nixosModules.default
+            chaotic.nixosModules.default
             #inputs.musnix.nixosModules.musnix
             {
               home-manager.useGlobalPkgs = true;
