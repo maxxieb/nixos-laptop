@@ -61,16 +61,16 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  networking.stevenBlackHosts = {
-    enable = true;
-    blockFakenews = true;
-    blockGambling = true;
-    blockSocial = false;
-  };
+  #networking.stevenBlackHosts = {
+  #  enable = true;
+  #  blockFakenews = true;
+  #  blockGambling = true;
+  #  blockSocial = false;
+  #};
 
   networking.extraHosts = "127.0.0.1 vault.vault";
 
-  #networking.extraHosts = {
+  #networking.hosts = {
   #  "192.168.11.28" = [ "bastion" ];
   #  "192.168.11.167" = [ "cntm" ];
   #  "127.0.0.1" = [ "vault.vault" ];
@@ -119,7 +119,7 @@
   # };
 
   services.k3s = {
-    enable = false;
+    enable = true;
     package = pkgs.k3s_1_30;
     extraFlags = "--disable traefik";
   };

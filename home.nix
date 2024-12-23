@@ -13,12 +13,12 @@ in
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
 
-  home.file = {
-    profile-pic = {
-      source = ./images/pfp.png;
-      target = ".face";
-    };
-  };
+  #home.file = {
+  #  profile-pic = {
+  #    source = ./images/pfp.png;
+  #    target = ".face";
+  #  };
+  #};
 
   home = {
     keyboard = {
