@@ -118,8 +118,20 @@
   #   };
   # };
 
+  #services = {
+  #  grafana = {
+  #    enable = true;
+  #  };
+  #  loki = {
+  #    enable = true;
+  #  };
+  #  alloy = {
+  #    enable = true;
+  #  };
+  #};
+
   services.k3s = {
-    enable = true;
+    enable = false;
     package = pkgs.k3s_1_30;
     extraFlags = "--disable traefik";
   };
@@ -171,7 +183,6 @@
     };
 
     videoDrivers = [
-      "intel"
       "modesetting"
     ];
     deviceSection = ''
@@ -293,9 +304,9 @@
       "scanner"
       "lp"
       "libvirtd"
+      "adbusers"
     ];
     shell = pkgs.zsh;
-    packages = with pkgs; [ ];
   };
   nixpkgs.config.permittedInsecurePackages = [ "electron-25.9.0" ];
 

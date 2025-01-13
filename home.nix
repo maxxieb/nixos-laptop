@@ -215,6 +215,7 @@ in
         ms-python.python
         redhat.ansible
         grafana.grafana-alloy
+        jgclark.vscode-todo-highlight
       ];
       userSettings = {
         "files.autoSave" = "onFocusChange";
