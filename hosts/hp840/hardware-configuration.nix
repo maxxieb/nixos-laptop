@@ -7,29 +7,29 @@
   pkgs,
   modulesPath,
   ...
-}:
+}: {
+  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
+  boot = {
+    kernelModules = ["kvm-intel"];
+    extraModulePackages = [];
+    initrd = {
+      availableKernelModules = [
+        "xhci_pci"
+        "nvme"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      kernelModules = [];
 
-{
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
-
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "nvme"
-    "usbhid"
-    "usb_storage"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+      luks.devices."luks-da0450cc-eb6f-45eb-9c32-883e6c71d3fa".device = "/dev/disk/by-uuid/da0450cc-eb6f-45eb-9c32-883e6c71d3fa";
+    };
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/feedfa63-882e-4fb1-9e1b-b0a3f68042fa";
     fsType = "ext4";
   };
-
-  boot.initrd.luks.devices."luks-da0450cc-eb6f-45eb-9c32-883e6c71d3fa".device =
-    "/dev/disk/by-uuid/da0450cc-eb6f-45eb-9c32-883e6c71d3fa";
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/B62B-EADF";
@@ -40,7 +40,7 @@
     ];
   };
 
-  swapDevices = [ { device = "/dev/disk/by-uuid/c72b7f2e-0876-46dd-802b-d229a3fc6e53"; } ];
+  swapDevices = [{device = "/dev/disk/by-uuid/c72b7f2e-0876-46dd-802b-d229a3fc6e53";}];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -51,16 +51,15 @@
   # networking.interfaces.wwan0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
   hardware = {
-    opengl = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+    graphics = {
       enable = true;
-      driSupport32Bit = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         intel-media-driver
         intel-ocl
-        intel-vaapi-driver
       ];
     };
   };
