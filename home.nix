@@ -1,33 +1,41 @@
 {
   pkgs,
   inputs,
-  lib,
   ...
 }: let
-  vs-ext = inputs.nix-vscode-extensions.extensions.x86_64-linux.vscode-marketplace;
   inherit (inputs.flox.packages.x86_64-linux) flox;
+  mdq = inputs.mdq.packages.x86_64-linux.default;
 in {
   home-manager = {
-    useGlobalPkgs = true;
+    useGlobalPkgs = false;
     extraSpecialArgs = {inherit inputs;};
     useUserPackages = true;
     users.max = {
       home = {
+        pointerCursor = {
+          gtk.enable = true;
+          name = "Vanilla-DMZ";
+          package = pkgs.vanilla-dmz;
+        };
         keyboard = {
           options = ["caps:escape"];
         };
 
         username = "max";
         homeDirectory = "/home/max";
-        stateVersion = "24.05"; # Please read the comment before changing.
+        stateVersion = "24.11"; # Please read the comment before changing.
         sessionPath = [
           "$HOME/go/bin"
           "$HOME/.config/emacs/bin"
         ];
 
         packages = with pkgs; [
+          opentofu
+          argocd
           wofi
+          nix-tree
           minikube
+          kubelogin-oidc
           openconnect
           mattermost-desktop
           bat
@@ -60,7 +68,7 @@ in {
           gnumake
           pdfannots2json
           go
-          google-chrome
+          chromium
           wdisplays
           gparted
           k3d
@@ -115,6 +123,7 @@ in {
           zip
           zotero
           flox
+          mdq
         ];
         sessionVariables = {
           TERM = "xterm-256color";
@@ -122,6 +131,38 @@ in {
         };
       };
       services = {
+        syncthing = {
+          enable = true;
+          settings = {
+            devices = {
+              "moto" = {id = "OBH4MX2-4CA7WTB-LHYAEEE-CXRKLE5-YE7HKA5-KGDZ33B-TOMQBCV-JSM55QG";};
+              "moto-cntm" = {id = "2PBUT6L-MQUPP7G-K5E4KOT-VIFQMSO-M5VXKV7-2RW4D5P-YSXDCF7-LK56PQU";};
+              "cntm-bastion" = {id = "W2OBVMB-23WN6OC-SANU2S4-C4LPL3H-T7FRMHS-H4HBCFY-RGTAW27-PN4OGAI";};
+            };
+            folders = {
+              "obsd2025" = {
+                path = "/home/max/Documents/obsd2025";
+                devices = ["moto-cntm" "moto" "cntm-bastion"];
+                id = "erwor-u3f5s";
+              };
+              "argo" = {
+                path = "/home/max/Documents/argo";
+                devices = ["moto"];
+                id = "n9u1i-h6gj5";
+              };
+              "cosmos" = {
+                path = "/home/max/Documents/cosmos";
+                devices = ["moto"];
+                id = "vhp8c-sr76v";
+              };
+              "the-matrix" = {
+                path = "/home/max/Documents/the-matrix";
+                devices = ["moto"];
+                id = "i1uz7-q3wm5";
+              };
+            };
+          };
+        };
         dunst = {
           enable = true;
           settings = {
@@ -137,6 +178,7 @@ in {
         };
       };
       programs = {
+        pandoc.enable = true;
         k9s = {
           enable = true;
         };
@@ -151,6 +193,7 @@ in {
         autorandr.enable = true;
         eza = {
           enable = true;
+          enableNushellIntegration = false;
           colors = "auto";
           git = true;
           icons = "auto";
@@ -160,32 +203,6 @@ in {
         zoxide.options = [
           "--cmd z"
         ];
-        vscode = {
-          enable = true;
-          package = pkgs.vscodium;
-          extensions = with vs-ext; [
-            zainchen.json
-            bbenoist.nix
-            golang.go
-            ms-python.python
-            redhat.ansible
-            grafana.grafana-alloy
-            jgclark.vscode-todo-highlight
-          ];
-          userSettings = {
-            "files.autoSave" = "onFocusChange";
-            "files.insertFinalNewline" = true;
-            "files.trimTrailingWhitespace" = true;
-            "editor.formatOnSave" = true;
-            "editor.cursorBlinking" = "phase";
-            "editor.cursorStyle" = "line";
-            "editor.fontLigatures" = true;
-            "workbench.sideBar.location" = "right";
-            "explorer.autoReveal" = true;
-            "editor.fontFamily" = lib.mkForce "Hack Nerd Font Mono";
-            "terminal.integrated.fontFamily" = lib.mkForce "Hack Nerd Font Mono";
-          };
-        };
 
         waybar.enable = true;
         waybar.settings = [
@@ -225,9 +242,16 @@ in {
             "battery".format = "{icon} {capacity}%";
           }
         ];
-
-        carapace.enable = true;
-        carapace.enableNushellIntegration = true;
+        nix-your-shell = {
+          enable = true;
+        };
+        carapace = {
+          enable = true;
+          enableNushellIntegration = true;
+        };
+        nushell = {
+          enable = true;
+        };
         zsh = {
           enable = true;
           initExtra = "${pkgs.owofetch}/bin/owofetch";
@@ -256,6 +280,7 @@ in {
         starship = {
           enable = true;
           enableZshIntegration = true;
+          enableNushellIntegration = true;
           settings = {
             add_newline = true;
 
@@ -277,15 +302,8 @@ in {
           userEmail = "maxbrydak@gmail.com";
           userName = "mbrydak";
         };
-        kitty = {
+        alacritty = {
           enable = true;
-
-          settings.background_opacity = lib.mkForce 0.8;
-          settings.confirm_os_window_close = 2;
-
-          font.name = lib.mkForce "Hack Nerd Font Mono";
-
-          shellIntegration.enableZshIntegration = true;
         };
 
         zellij.enable = true;
@@ -312,11 +330,23 @@ in {
               name = "hcl";
               auto-format = true;
             }
+            {
+              name = "nix";
+              auto-format = true;
+            }
+            {
+              name = "nu";
+              auto-format = true;
+            }
+            {
+              name = "yaml";
+              auto-format = true;
+            }
           ];
         };
         rofi = {
           enable = true;
-          terminal = "kitty";
+          terminal = "alacritty";
 
           extraConfig.modes = "window,drun,run,ssh";
           extraConfig.show-icons = true;
@@ -325,7 +355,6 @@ in {
         hyprlock.enable = true;
       };
 
-      fonts.fontconfig.enable = true;
       wayland = {
         windowManager = {
           hyprland = {
@@ -378,17 +407,19 @@ in {
                 ", XF86AudioNext, exec, ${pkgs.playerctl}/bin/playerctl next"
               ];
               bind = [
+                "$mainMod, L, exec, hyprlock"
+                "$mainMod CTRL,  D, exec, hyprctl keyword general:layout \"master\""
                 "$mainMod SHIFT, D, exec, hyprctl keyword general:layout \"dwindle\""
                 "$mainMod CTRL,  D, exec, hyprctl keyword general:layout \"master\""
-                
+
                 "$mainMod SHIFT, M, layoutmsg, swapwithmaster"
                 "$mainMod, F, fullscreen"
-                "$mainMod, RETURN, exec, ${pkgs.kitty}/bin/kitty"
+                "$mainMod, RETURN, exec, ${pkgs.alacritty}/bin/alacritty"
                 "$mainMod, C, killactive,"
                 "$mainMod SHIFT, E, exit,"
-                "$mainMod, E, exec, ${pkgs.dolphin}/bin/dolphin"
+                "$mainMod, E, exec, ${pkgs.nautilus}/bin/nautilus"
                 "$mainMod, V, togglefloating,"
-                "$mainMod, R, exec, ${pkgs.wofi}/bin/wofi --show drun"
+                "$mainMod, R, exec, ${pkgs.wofi}/bin/wofi --show run"
                 "$mainMod, P, pseudo," # dwindle
                 "$mainMod, J, togglesplit," # dwindle
                 "$mainMod, T, togglegroup,"
@@ -399,7 +430,6 @@ in {
                 "$mainMod, up, movefocus, u"
                 "$mainMod, down, movefocus, d"
 
-                
                 "$mainMod, left, changegroupactive, b"
                 "$mainMod, right, changegroupactive, f"
 
@@ -407,7 +437,6 @@ in {
                 "$mainMod SHIFT, right, movewindoworgroup, r"
                 "$mainMod SHIFT, up, movewindoworgroup, u"
                 "$mainMod SHIFT, down, movewindoworgroup, d"
-
 
                 # Screen brightness
                 ", XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl s +5%"

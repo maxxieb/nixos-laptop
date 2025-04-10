@@ -8,6 +8,7 @@
   ...
 }
 : let
+  rootPath = ../../.;
   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
 in {
   imports = [
@@ -46,6 +47,9 @@ in {
     optimise.automatic = true;
   };
   boot = {
+    binfmt = {
+      emulatedSystems = ["aarch64-linux"];
+    };
     kernelPackages = pkgs.linuxPackages_cachyos-lto;
     loader = {
       # Bootloader.
@@ -56,6 +60,16 @@ in {
     initrd.luks.devices."luks-8ca1acab-c74d-4bfb-9230-d66684026ef6".device = "/dev/disk/by-uuid/8ca1acab-c74d-4bfb-9230-d66684026ef6";
   };
   networking = {
+    #openconnect = {
+    #  interfaces = {
+    #    openconnect0 = {
+    #      gateway = "connect.flipfit.io/flip";
+    #      protocol = "anyconnect";
+    #      user = "kamil@flip.shop";
+    #      passwordFile = ./certs/anyconnect-passwd;
+    #    };
+    #  };
+    #};
     hostName = "hp840"; # Define your hostname.
     networkmanager.enable = true;
     stevenBlackHosts = {
@@ -65,9 +79,12 @@ in {
       blockSocial = false;
     };
 
-    extraHosts = "127.0.0.1 vault.vault";
+    extraHosts = ''
+      127.0.0.1 vault.vault
+      192.168.11.21 bastion
+    '';
 
-    nameservers = ["192.168.0.57"];
+    # nameservers = ["192.168.0.57"];
 
     firewall = {
       allowedUDPPorts = [5353];
@@ -92,6 +109,10 @@ in {
   stylix = {
     enable = true;
 
+    opacity = {
+      terminal = 0.8;
+    };
+
     base16Scheme = {
       base00 = "1c202c";
       base01 = "4d4455";
@@ -114,12 +135,70 @@ in {
       slug = "stylix";
     };
 
-    image = ./wallpaper/49041096012_fde0c8a500_o.jpg;
+    image = rootPath + /wallpaper/49041096012_fde0c8a500_o.jpg;
 
     polarity = "dark";
   };
   services = {
-    ollama.enable = true;
+    k3s = {
+      enable = true;
+      package = pkgs.k3s_1_31;
+      extraFlags = ["--disable=traefik"];
+    };
+    #webdav = {
+    #  enable = true;
+    #  settings = {
+    #    directory = "/srv/webdav";
+    #    address = "0.0.0.0";
+    #    port = 8080;
+    #    modify = true;
+    #    permissions = "CRUD";
+    #    users = [
+    #      {
+    #        username = "admin";
+    #        password = "admin";
+    #      }
+    #    ];
+    #  };
+    #};
+    #webdav-server-rs = {
+    #  enable = true;
+    #  settings = {
+    #    server.listen = ["0.0.0.0:4918" "[::]:4918"];
+    #    accounts = {
+    #      auth-type = "htpasswd.default";
+    #      acct-type = "unix";
+    #    };
+    #    htpasswd.default = {
+    #      htpasswd = "/etc/htpasswd";
+    #    };
+    #    location = [
+    #      {
+    #        route = ["/zotero/*path"];
+    #        directory = "/srv/zotero";
+    #        handler = "filesystem";
+    #        methods = ["webdav-ro"];
+    #        autoindex = true;
+    #        auth = "false";
+    #      }
+    #    ];
+    #  };
+    #};
+    #xserver = {
+    #  enable = true;
+    #  displayManager.gdm.enable = true;
+    #  desktopManager.gnome.enable = true;
+    #};
+    qemuGuest.enable = true;
+    spice-vdagentd.enable = true;
+    #ollama = {
+    #  enable = true;
+    #  loadModels = ["deepseek-r1:1.5b" "deepseek-r1:7b" "deepseek-r1:8b" "llama3.1:8b" "llama3.2:3b"];
+    #};
+    #open-webui = {
+    #  enable = true;
+    #  openFirewall = true;
+    #};
     speechd.enable = false;
     printing = {
       enable = true;
@@ -141,12 +220,6 @@ in {
     };
     resolved.enable = true;
 
-    k3s = {
-      enable = false;
-      package = pkgs.k3s_1_31;
-      extraFlags = "--disable traefik";
-    };
-
     locate.enable = true;
 
     pipewire = {
@@ -161,7 +234,7 @@ in {
       };
     };
     openssh = {
-      enable = false;
+      enable = true;
       settings = {
         UseDns = true;
         PasswordAuthentication = true;
@@ -186,6 +259,7 @@ in {
     };
   };
   environment = {
+    stub-ld.enable = false;
     sessionVariables.NIXOS_OZONE_WL = "1";
 
     pathsToLink = [
@@ -213,57 +287,11 @@ in {
     };
   };
   programs = {
+    virt-manager.enable = true;
     steam = {
       enable = true;
       remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
       dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-    };
-    nvf = {
-      enable = true;
-      enableManpages = true;
-      settings = {
-        vim = {
-          autocomplete.nvim-cmp.enable = true;
-
-          autopairs.nvim-autopairs.enable = true;
-
-          binds.whichKey.enable = true;
-
-          comments.comment-nvim.enable = true;
-
-          fzf-lua.enable = true;
-
-          git.enable = true;
-          languages = {
-            enableDAP = true;
-            enableExtraDiagnostics = true;
-            enableFormat = true;
-            enableLSP = true;
-            enableTreesitter = true;
-            bash.enable = true;
-            go.enable = true;
-            hcl.enable = true;
-            html.enable = true;
-            markdown.enable = true;
-            nix.enable = true;
-            python.enable = true;
-            rust.enable = true;
-            sql.enable = true;
-            terraform.enable = true;
-            ts.enable = true;
-          };
-          lsp = {
-            enable = true;
-          };
-          notes = {
-            todo-comments.enable = true;
-          };
-          notify.nvim-notify.enable = true;
-          options = {
-            shiftwidth = 2;
-          };
-        };
-      };
     };
 
     ssh.startAgent = true;
@@ -285,7 +313,7 @@ in {
   };
   security = {
     # set the runtime directory
-    # pam.services.gdm-password.enableGnomeKeyring = true;
+    #pam.services.gdm-password.enableGnomeKeyring = true;
     pki.certificateFiles = [
       ./certs/ca-chain.crt
       ./certs/ca.crt
@@ -341,6 +369,7 @@ in {
     ];
   };
   virtualisation = {
+    libvirtd.enable = true;
     containers.enable = true;
     docker.enable = true;
   };

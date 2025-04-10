@@ -2,12 +2,18 @@
   description = "Flaked NixOS Config";
 
   inputs = {
+    #nix-snapshotter = {
+    #  url = "github:maxxieb/nix-snapshotter";
+    #inputs.nixpkgs.follows = "nixpkgs";
+    #};
+    niri-flake = {
+      url = "github:sodiboo/niri-flake";
+    };
     hosts.url = "github:StevenBlack/hosts";
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0-3.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -29,12 +35,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nvf = {
-      url = "github:notashelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mdq = {
+      url = "github:maxxieb/mdq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -46,8 +52,10 @@
     lix-module,
     chaotic,
     hosts,
-    nvf,
     rust-overlay,
+    #nix-snapshotter,
+    niri-flake,
+    self,
     ...
   } @ inputs: {
     nixosConfigurations = {
@@ -60,7 +68,7 @@
           ./hosts/t480/configuration.nix
           stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
-          nvf.nixosModules.nvf
+          niri-flake.nixosModules.niri
           ./home.nix
         ];
       };
@@ -73,13 +81,37 @@
             nixpkgs.overlays = [rust-overlay.overlays.default];
             environment.systemPackages = [pkgs.rust-bin.stable.latest.default];
           })
+          #  ({pkgs, ...}: {
+          #    # (1) Import nixos module.
+          #    imports = [nix-snapshotter.nixosModules.default];
+
+          #    # (2) Add overlay.
+          #    nixpkgs.overlays = [nix-snapshotter.overlays.default];
+
+          #    # (3) Enable service.
+          #    virtualisation.containerd = {
+          #      enable = false;
+          #      nixSnapshotterIntegration = true;
+          #      k3sIntegration = true;
+          #    };
+          #    services.nix-snapshotter = {
+          #      enable = true;
+          #    };
+          #    services.k3s = {
+          #      enable = true;
+          #      snapshotter = "nix";
+          #    };
+
+          #    # (4) Add a containerd CLI like nerdctl.
+          #    environment.systemPackages = [pkgs.nerdctl];
+          #  })
           ./hosts/hp840/configuration.nix
           stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
           lix-module.nixosModules.default
           chaotic.nixosModules.default
           hosts.nixosModule
-          nvf.nixosModules.nvf
+          niri-flake.nixosModules.niri
           ./home.nix
         ];
       };
