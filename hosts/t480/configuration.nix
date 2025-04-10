@@ -304,6 +304,22 @@ in {
     ];
     shell = pkgs.zsh;
   };
+
+  users.users.qlb = {
+    initialPasword = "changethispassword";
+    isNormalUser = true;
+    description = "qlb";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+      "scanner"
+      "lp"
+      "libvirtd"
+    ];
+    shell = pkgs.zsh;
+  };
+
   nixpkgs.config.permittedInsecurePackages = ["electron-25.9.0"];
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
