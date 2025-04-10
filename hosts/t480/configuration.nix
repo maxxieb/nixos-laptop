@@ -306,7 +306,7 @@ in {
   };
 
   users.users.qlb = {
-    initialPasword = "changethispassword";
+    initialPassword = "changethispassword";
     isNormalUser = true;
     description = "qlb";
     extraGroups = [
