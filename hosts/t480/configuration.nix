@@ -305,7 +305,7 @@ in {
     shell = pkgs.zsh;
   };
     users.users.qlb = {
-    initialPassword = "dupa123"
+    initialPassword = "dupa123";
     isNormalUser = true;
     description = "qlb";
     extraGroups = [
