@@ -487,7 +487,7 @@ in {
       };
     };
   };
-  users.max = {
+  users.qlb = {
       home = {
         pointerCursor = {
           gtk.enable = true;
@@ -498,8 +498,8 @@ in {
           options = ["caps:escape"];
         };
 
-        username = "max";
-        homeDirectory = "/home/max";
+        username = "qlb";
+        homeDirectory = "/home/qlb";
         stateVersion = "24.11"; # Please read the comment before changing.
         sessionPath = [
           "$HOME/go/bin"
