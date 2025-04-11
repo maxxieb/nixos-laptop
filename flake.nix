@@ -68,7 +68,6 @@
           ./hosts/t480/configuration.nix
           stylix.nixosModules.stylix
           home-manager.nixosModules.home-manager
-          niri-flake.nixosModules.niri
           ./home.nix
         ];
       };

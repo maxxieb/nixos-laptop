@@ -1,8 +1,9 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{pkgs, ...}: let
+{inputs, pkgs, ...}: let
   rootPath = ../../.;
+  tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -16,20 +17,30 @@ in {
     ];
 
     settings = {
-      substituters = ["https://hyprland.cachix.org"];
+
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://hyprland.cachix.org"
+        "https://niri.cachix.org"
+        "https://nvf.cachix.org"
+        "https://cache.flox.dev"
+        "https://chaotic-nyx.cachix.org/"
+      ];
       trusted-public-keys = [
-        # "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+        "nvf.cachix.org-1:GMQWiUhZ6ux9D5CvFFMwnc2nFrUHTeGaXRlVBXo+naI="
+        "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
+        "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
       ];
     };
 
+    extraOptions = ''
+      trusted-users = root max qlb
+    '';
     optimise.automatic = true;
 
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
-    };
   };
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -139,47 +150,25 @@ in {
         CPU_MAX_PERF_ON_BAT = 60;
       };
     };
-    xserver = {
-      enable = true;
-      libinput = {
-        enable = true;
-        touchpad = {
-          disableWhileTyping = true;
-        };
-        mouse.accelProfile = "flat";
-      };
-      windowManager.i3 = {
-        enable = true;
-        package = pkgs.i3-gaps;
-        extraPackages = with pkgs; [
-          i3status
-          i3lock
-          i3blocks
-          lxappearance
-        ];
-      };
-      videoDrivers = ["modesetting"];
-      deviceSection = ''
-        Option "DRI" "2"
-        Option "TearFree" "true"
-      '';
-    };
 
     locate.enable = true;
 
     # Enable the SDDM Dispaly Manager
-    xserver.displayManager.sddm.enable = true;
 
     # enable picom
     picom.enable = true;
     gnome.gnome-keyring.enable = true;
 
     # Configure keymap in X11
-    xserver = {
-      xkb = {
-        layout = "pl";
-        variant = "";
-        options = "caps:escape";
+
+
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${tuigreet} --time --time-format '%a, %d %b %Y • %T' --greeting  '[Become \t          Visible]' --asterisks --remember --cmd Hyprland";
+          user = "greeter";
+        };
       };
     };
 
@@ -219,16 +208,7 @@ in {
     #   enableSSHSupport = true;
     # };
 
-    # programs.hyprland = {
-    #   enable = true;
-    #   package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    #   xwayland.enable = true;
-    # };
 
-    xserver.displayManager = {
-      #enable = true;
-      defaultSession = "none+i3";
-    };
   };
 
   # Set your time zone.
@@ -258,6 +238,14 @@ in {
   };
   security.pam.services.lightdm.enableGnomeKeyring = true;
   programs = {
+
+     hyprland = {
+       enable = true;
+       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+       xwayland.enable = true;
+      portalPackage =
+        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+     };
     ssh.startAgent = true;
 
     virt-manager.enable = true;
