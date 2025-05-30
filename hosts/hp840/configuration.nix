@@ -60,16 +60,16 @@ in {
     initrd.luks.devices."luks-8ca1acab-c74d-4bfb-9230-d66684026ef6".device = "/dev/disk/by-uuid/8ca1acab-c74d-4bfb-9230-d66684026ef6";
   };
   networking = {
-    #openconnect = {
-    #  interfaces = {
-    #    openconnect0 = {
-    #      gateway = "connect.flipfit.io/flip";
-    #      protocol = "anyconnect";
-    #      user = "kamil@flip.shop";
-    #      passwordFile = ./certs/anyconnect-passwd;
-    #    };
-    #  };
-    #};
+    # openconnect = {
+    #   interfaces = {
+    #     openconnect0 = {
+    #       gateway = "connect.flipfit.io/flip";
+    #       protocol = "anyconnect";
+    #       user = "kamil@flip.shop";
+    #       passwordFile = /etc/nixos/hosts/hp840/certs/anyconnect-passwd;
+    #     };
+    #   };
+    # };
     hostName = "hp840"; # Define your hostname.
     networkmanager.enable = true;
     stevenBlackHosts = {
@@ -82,6 +82,8 @@ in {
     extraHosts = ''
       127.0.0.1 vault.vault
       192.168.11.21 bastion
+      192.168.11.193 argocd.connectome.name
+      192.168.11.193 argocd-grpc.connectome.name
     '';
 
     # nameservers = ["192.168.0.57"];
@@ -100,6 +102,7 @@ in {
         10250
         6379
         80
+        8080
         443
       ];
     };
@@ -140,9 +143,15 @@ in {
     polarity = "dark";
   };
   services = {
-    k3s = {
+    freshrss = {
       enable = true;
-      package = pkgs.k3s_1_31;
+      authType = "none";
+      baseUrl = "http://localhost";
+    };
+    gitea.enable = true;
+    k3s = {
+      enable = false;
+      package = pkgs.k3s_1_32;
       extraFlags = ["--disable=traefik"];
     };
     #webdav = {
@@ -300,8 +309,7 @@ in {
     hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
 
@@ -381,6 +389,7 @@ in {
     portal.enable = true;
     portal.extraPortals = [
       pkgs.xdg-desktop-portal-gtk
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland
     ];
   };
   virtualisation = {

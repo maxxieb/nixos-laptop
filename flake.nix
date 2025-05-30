@@ -2,6 +2,10 @@
   description = "Flaked NixOS Config";
 
   inputs = {
+    openconnect-sso = {
+      url = "github:arthur-d42/openconnect-sso";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     #nix-snapshotter = {
     #  url = "github:maxxieb/nix-snapshotter";
     #inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +47,10 @@
       url = "github:maxxieb/mdq";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blucontrol = {
+      url = "github:jumper149/blucontrol";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -53,8 +61,10 @@
     chaotic,
     hosts,
     rust-overlay,
+    openconnect-sso,
     #nix-snapshotter,
     niri-flake,
+    blucontrol,
     self,
     ...
   } @ inputs: {

@@ -5,6 +5,8 @@
 }: let
   inherit (inputs.flox.packages.x86_64-linux) flox;
   mdq = inputs.mdq.packages.x86_64-linux.default;
+  inherit (inputs.openconnect-sso.packages.x86_64-linux) openconnect-sso;
+  #  blucontrol = inputs.blucontrol.packages.x86_64-linux.blucontrol;
 in {
   home-manager = {
     useGlobalPkgs = false;
@@ -32,6 +34,10 @@ in {
         packages = with pkgs; [
           opentofu
           argocd
+          gammastep
+          k3d
+          argocd-autopilot
+          telegram-desktop
           wofi
           nix-tree
           minikube
@@ -69,6 +75,7 @@ in {
           pdfannots2json
           go
           chromium
+          google-chrome
           wdisplays
           gparted
           k3d
@@ -123,7 +130,9 @@ in {
           zip
           zotero
           flox
+          openconnect-sso
           mdq
+          #blucontrol
         ];
         sessionVariables = {
           TERM = "xterm-256color";
@@ -267,8 +276,8 @@ in {
         git = {
           enable = true;
           delta.enable = true;
-          userEmail = "maxbrydak@gmail.com";
-          userName = "mbrydak";
+          userEmail = "max@connectome.name";
+          userName = "max";
         };
         alacritty = {
           enable = true;
@@ -475,6 +484,8 @@ in {
         ];
 
         packages = with pkgs; [
+          openconnect-sso
+
           opentofu
           argocd
           wofi

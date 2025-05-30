@@ -1,7 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{inputs, pkgs, ...}: let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   rootPath = ../../.;
   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
 in {
@@ -17,7 +21,6 @@ in {
     ];
 
     settings = {
-
       substituters = [
         "https://nix-community.cachix.org"
         "https://hyprland.cachix.org"
@@ -40,7 +43,6 @@ in {
       trusted-users = root max qlb
     '';
     optimise.automatic = true;
-
   };
   environment = {
     sessionVariables.NIXOS_OZONE_WL = "1";
@@ -161,7 +163,6 @@ in {
 
     # Configure keymap in X11
 
-
     greetd = {
       enable = true;
       settings = {
@@ -207,8 +208,6 @@ in {
     #   enable = true;
     #   enableSSHSupport = true;
     # };
-
-
   };
 
   # Set your time zone.
@@ -238,14 +237,13 @@ in {
   };
   security.pam.services.lightdm.enableGnomeKeyring = true;
   programs = {
-
-     hyprland = {
-       enable = true;
-       package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-       xwayland.enable = true;
+    hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+      xwayland.enable = true;
       portalPackage =
         inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-     };
+    };
     ssh.startAgent = true;
 
     virt-manager.enable = true;
