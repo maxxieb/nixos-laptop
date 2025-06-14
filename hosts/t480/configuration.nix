@@ -271,6 +271,7 @@ in {
 
     # enalbe zsh
     zsh.enable = true;
+    nix-ld.enable = true;
   };
 
   # Configure console keymap
