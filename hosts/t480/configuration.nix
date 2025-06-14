@@ -1,4 +1,4 @@
-# Edit this configuration file to define what should be installed on
+gg# Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 {
@@ -61,6 +61,7 @@ in {
       libnotify
       xterm
       rofi
+      cloudflare-warp
     ];
   };
   boot = {
@@ -125,6 +126,12 @@ in {
     polarity = "dark";
   };
   services = {
+
+    k3s = {
+      enable = true;
+      package = pkgs.k3s_1_31;
+      extraFlags = ["--disable=traefik"];
+    };
     syslog-ng.enable = true;
     resolved.enable = true;
     openssh.enable = true;
@@ -323,6 +330,7 @@ in {
   virtualisation = {
     docker.enable = true;
     libvirtd.enable = true;
+    containers.enable = true;
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -337,4 +345,6 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
+  systemd.packages = [ pkgs.cloudflare-warp ]; # for warp-cli
+  systemd.targets.multi-user.wants = [ "warp-svc.service" ]; # causes warp-svc to be started automatically
 }
