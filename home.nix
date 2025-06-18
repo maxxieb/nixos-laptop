@@ -35,7 +35,6 @@ in {
           opentofu
           argocd
           gammastep
-          k3d
           argocd-autopilot
           telegram-desktop
           wofi

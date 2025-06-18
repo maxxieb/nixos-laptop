@@ -142,7 +142,7 @@ in {
   services = {
 
     k3s = {
-      enable = true;
+      enable = false;
       package = pkgs.k3s_1_31;
       extraFlags = ["--disable=traefik"];
     };
