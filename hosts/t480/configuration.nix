@@ -202,9 +202,11 @@ in {
 
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
+   
+    pulseaudio.enable = false;
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -277,9 +279,6 @@ in {
   # Configure console keymap
   console.keyMap = "pl2";
   hardware = {
-    # Enable sound with pipewire.
-    pulseaudio.enable = false;
-
     # Enable bluetooth and sound over bluetooth
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
