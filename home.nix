@@ -43,7 +43,6 @@ in {
           minikube
           kubelogin-oidc
           openconnect
-          mattermost-desktop
           bat
           bitwarden
           croc
@@ -485,7 +484,6 @@ in {
 
         packages = with pkgs; [
           openconnect-sso
-
           opentofu
           argocd
           wofi
@@ -493,7 +491,6 @@ in {
           minikube
           kubelogin-oidc
           openconnect
-          mattermost-desktop
           bat
           bitwarden
           croc
@@ -565,7 +562,6 @@ in {
           ripgrep
           rsync
           slack
-          spotify
           starship
           tealdeer
           traceroute
@@ -650,7 +646,7 @@ in {
               format = "{ifname} {ipaddr}";
             };
             "clock" = {
-              interval = 5;
+              interval = 1;
               format = "{:%H:%M:%S}";
               format-alt = "{:%A, %B %d, %Y (%R)}  ";
               tooltip-format = "<tt><small>{calendar}</small></tt>";
@@ -689,29 +685,28 @@ in {
             k = "kubectl";
             glow = "glow -p";
           };
-
           history.ignoreDups = true;
-
           oh-my-zsh.enable = true;
           oh-my-zsh.plugins = [
             "git"
             "sudo"
             "aws"
+            "kubectl"
           ];
-
           sessionVariables.TERM = "xterm-256color";
         };
+
         starship = {
           enable = true;
           enableZshIntegration = true;
           enableNushellIntegration = true;
           settings = {
             add_newline = true;
-
             character.success_symbol = "[➜](bold green)";
             character.error_symbol = "[➜](bold red)";
           };
         };
+
         fzf = {
           enable = true;
           enableZshIntegration = true;
@@ -720,12 +715,14 @@ in {
 
           tmux.enableShellIntegration = true;
         };
-        #git = {
-        #  enable = true;
-        #  delta.enable = true;
-        #  userEmail = "maxbrydak@gmail.com";
-        #  userName = "mbrydak";
-        #};
+
+        git = {
+          enable = true;
+          delta.enable = true;
+          userEmail = "qoolbio@gmail.com";
+          userName = "qlb";
+        };
+
         alacritty = {
           enable = true;
         };
@@ -735,6 +732,7 @@ in {
 
         direnv.enable = true;
         direnv.nix-direnv.enable = true;
+
         helix = {
           enable = true;
           extraPackages = [
@@ -744,7 +742,6 @@ in {
             pkgs.rust-analyzer
             pkgs.gopls
           ];
-
           languages.language = [
             {
               name = "rust";
@@ -768,15 +765,16 @@ in {
             }
           ];
         };
+
         rofi = {
           enable = true;
           terminal = "alacritty";
-
           extraConfig.modes = "window,drun,run,ssh";
           extraConfig.show-icons = true;
         };
 
         hyprlock.enable = true;
+
       };
 
       wayland = {
@@ -848,14 +846,14 @@ in {
                 "$mainMod, J, togglesplit," # dwindle
                 "$mainMod, T, togglegroup,"
 
-                # Move focus with mainMod + arrow keys
-                "$mainMod, left, movefocus, l"
-                "$mainMod, right, movefocus, r"
-                "$mainMod, up, movefocus, u"
-                "$mainMod, down, movefocus, d"
+                # Move focus with mainMod CTRL + arrow keys
+                "$mainMod CTRL, left, movefocus, l"
+                "$mainMod CTRL, right, movefocus, r"
+                "$mainMod CTRL, up, movefocus, u"
+                "$mainMod CTRL, down, movefocus, d"
 
-                "$mainMod, left, changegroupactive, b"
-                "$mainMod, right, changegroupactive, f"
+                "$mainMod CTRL, left, changegroupactive, b"
+                "$mainMod CTRL, right, changegroupactive, f"
 
                 "$mainMod SHIFT, left, movewindoworgroup, l"
                 "$mainMod SHIFT, right, movewindoworgroup, r"
@@ -894,8 +892,8 @@ in {
                 "$mainMod SHIFT, 0, movetoworkspace, 10"
 
                 # Scroll through existing workspaces with mainMod + scroll
-                "$mainMod, mouse_down, workspace, e+1"
-                "$mainMod, mouse_up, workspace, e-1"
+                "$mainMod, left, workspace, e+1"
+                "$mainMod, right, workspace, e-1"
 
                 # Move/resize windows with mainMod + LMB/RMB and dragging
               ];
