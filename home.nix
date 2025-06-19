@@ -482,7 +482,6 @@ in {
         ];
 
         packages = with pkgs; [
-          helix
           openconnect-sso
           opentofu
           argocd
