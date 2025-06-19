@@ -482,6 +482,7 @@ in {
         ];
 
         packages = with pkgs; [
+          helix
           openconnect-sso
           opentofu
           argocd
@@ -891,8 +892,8 @@ in {
                 "$mainMod SHIFT, 0, movetoworkspace, 10"
 
                 # Scroll through existing workspaces with mainMod + scroll
-                "$mainMod, left, workspace, e+1"
-                "$mainMod, right, workspace, e-1"
+                "$mainMod, left, workspace, e-1"
+                "$mainMod, right, workspace, e+1"
 
                 # Move/resize windows with mainMod + LMB/RMB and dragging
               ];
