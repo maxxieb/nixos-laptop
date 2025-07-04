@@ -482,6 +482,7 @@ in {
         ];
 
         packages = with pkgs; [
+          sweethome3d
           openconnect-sso
           opentofu
           argocd
