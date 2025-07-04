@@ -62,6 +62,7 @@ in {
       xterm
       rofi
       cloudflare-warp
+      sweethome3d
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
           bbenoist.nix
