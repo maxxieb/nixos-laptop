@@ -4,7 +4,6 @@
   inputs = {
     openconnect-sso = {
       url = "github:arthur-d42/openconnect-sso";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     #nix-snapshotter = {
     #  url = "github:maxxieb/nix-snapshotter";

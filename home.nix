@@ -2,15 +2,17 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   inherit (inputs.flox.packages.x86_64-linux) flox;
   mdq = inputs.mdq.packages.x86_64-linux.default;
   inherit (inputs.openconnect-sso.packages.x86_64-linux) openconnect-sso;
   #  blucontrol = inputs.blucontrol.packages.x86_64-linux.blucontrol;
-in {
+in
+{
   home-manager = {
     useGlobalPkgs = false;
-    extraSpecialArgs = {inherit inputs;};
+    extraSpecialArgs = { inherit inputs; };
     useUserPackages = true;
     users.max = {
       home = {
@@ -20,18 +22,19 @@ in {
           package = pkgs.vanilla-dmz;
         };
         keyboard = {
-          options = ["caps:escape"];
+          options = [ "caps:escape" ];
         };
 
         username = "max";
         homeDirectory = "/home/max";
-        stateVersion = "24.11"; # Please read the comment before changing.
+        stateVersion = "25.05"; # Please read the comment before changing.
         sessionPath = [
           "$HOME/go/bin"
           "$HOME/.config/emacs/bin"
         ];
 
         packages = with pkgs; [
+          calibre
           opentofu
           argocd
           gammastep
@@ -44,6 +47,7 @@ in {
           kubelogin-oidc
           openconnect
           mattermost-desktop
+          mixxx
           bat
           bitwarden
           croc
@@ -95,7 +99,7 @@ in {
           kind
           kubectl
           kubernetes-helm
-          devenv
+
           kustomize
           libgen-cli
           lm_sensors
@@ -187,8 +191,8 @@ in {
             layer = "top";
             position = "top";
             height = 30;
-            modules-left = ["hyprland/workspaces"];
-            modules-center = ["clock"];
+            modules-left = [ "hyprland/workspaces" ];
+            modules-center = [ "clock" ];
             modules-right = [
               "network"
               "battery"
@@ -472,12 +476,12 @@ in {
           package = pkgs.vanilla-dmz;
         };
         keyboard = {
-          options = ["caps:escape"];
+          options = [ "caps:escape" ];
         };
 
         username = "qlb";
         homeDirectory = "/home/qlb";
-        stateVersion = "24.11"; # Please read the comment before changing.
+        stateVersion = "25.05"; # Please read the comment before changing.
         sessionPath = [
           "$HOME/go/bin"
           "$HOME/.config/emacs/bin"
@@ -544,7 +548,7 @@ in {
           kind
           kubectl
           kubernetes-helm
-          devenv
+
           kustomize
           libgen-cli
           lm_sensors
@@ -634,8 +638,8 @@ in {
             layer = "top";
             position = "top";
             height = 30;
-            modules-left = ["hyprland/workspaces"];
-            modules-center = ["clock"];
+            modules-left = [ "hyprland/workspaces" ];
+            modules-center = [ "clock" ];
             modules-right = [
               "network"
               "battery"
