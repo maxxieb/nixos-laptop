@@ -85,10 +85,12 @@
           inherit inputs;
         };
         modules = [
-          ({pkgs, ...}: {
-            nixpkgs.overlays = [rust-overlay.overlays.default];
-            environment.systemPackages = [pkgs.rust-bin.stable.latest.default];
-          })
+          (
+            {pkgs, ...}: {
+              nixpkgs.overlays = [rust-overlay.overlays.default];
+              environment.systemPackages = [pkgs.rust-bin.stable.latest.default];
+            }
+          )
           #  ({pkgs, ...}: {
           #    # (1) Import nixos module.
           #    imports = [nix-snapshotter.nixosModules.default];

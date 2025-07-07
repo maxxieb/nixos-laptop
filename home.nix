@@ -2,17 +2,15 @@
   pkgs,
   inputs,
   ...
-}:
-let
+}: let
   inherit (inputs.flox.packages.x86_64-linux) flox;
   mdq = inputs.mdq.packages.x86_64-linux.default;
   inherit (inputs.openconnect-sso.packages.x86_64-linux) openconnect-sso;
   #  blucontrol = inputs.blucontrol.packages.x86_64-linux.blucontrol;
-in
-{
+in {
   home-manager = {
     useGlobalPkgs = false;
-    extraSpecialArgs = { inherit inputs; };
+    extraSpecialArgs = {inherit inputs;};
     useUserPackages = true;
     users.max = {
       home = {
@@ -22,7 +20,7 @@ in
           package = pkgs.vanilla-dmz;
         };
         keyboard = {
-          options = [ "caps:escape" ];
+          options = ["caps:escape"];
         };
 
         username = "max";
@@ -191,8 +189,8 @@ in
             layer = "top";
             position = "top";
             height = 30;
-            modules-left = [ "hyprland/workspaces" ];
-            modules-center = [ "clock" ];
+            modules-left = ["hyprland/workspaces"];
+            modules-center = ["clock"];
             modules-right = [
               "network"
               "battery"
@@ -476,7 +474,7 @@ in
           package = pkgs.vanilla-dmz;
         };
         keyboard = {
-          options = [ "caps:escape" ];
+          options = ["caps:escape"];
         };
 
         username = "qlb";
@@ -638,8 +636,8 @@ in
             layer = "top";
             position = "top";
             height = 30;
-            modules-left = [ "hyprland/workspaces" ];
-            modules-center = [ "clock" ];
+            modules-left = ["hyprland/workspaces"];
+            modules-center = ["clock"];
             modules-right = [
               "network"
               "battery"

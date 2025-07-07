@@ -159,7 +159,7 @@ in {
 
     # enable picom
     picom.enable = true;
-    gnome.gnome-keyring.enable = true;
+    #gnome.gnome-keyring.enable = true;
 
     # Configure keymap in X11
 
@@ -235,7 +235,7 @@ in {
       generateCaches = true;
     };
   };
-  security.pam.services.lightdm.enableGnomeKeyring = true;
+  #security.pam.services.lightdm.enableGnomeKeyring = true;
   programs = {
     hyprland = {
       enable = true;
@@ -336,5 +336,5 @@ in {
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 }
